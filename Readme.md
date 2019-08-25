@@ -26,7 +26,7 @@ app.use(bitnaclExpress.logger()); // use default "simple" format
     You can specify 3 different formats: ```simple``` (default), ```json``` and ```extended```
     ```javascript
     app.use(bitnaclExpress.logger({
-        format: 'json' // optional: default is simple
+        format: 'json' // optional: default is "simple"
     }));  
     ```
 
@@ -99,7 +99,7 @@ app.use(bitnaclExpress.logger()); // use default "simple" format
     app.use(router);
 
     app.use(bitnaclExpress.errorLogger({
-        format: 'json' // optional: default is simple
+        format: 'json' // optional: default is "simple"
     }));
     ```
 
