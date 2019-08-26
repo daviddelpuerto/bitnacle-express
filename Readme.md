@@ -21,7 +21,7 @@ app.use(bitnaclExpress.logger()); // use default "simple" format
 
 ## Usage
 
-- ### Log incoming HTTP requests using ```logger```:
+- **Log incoming HTTP requests using ```logger```**:
 
     You can specify 3 different formats: ```simple``` (default), ```json``` and ```extended```
     ```javascript
@@ -89,7 +89,7 @@ app.use(bitnaclExpress.logger()); // use default "simple" format
     app.use(bitnaclExpress.logger())
     ```
 
-- ### Log errors using ```errorLogger```
+- **Log errors using ```errorLogger```**
 
     The ```errorLogger``` only supports the ```simple``` and ```json``` formats. Your app must use it **after** the routes declaration.
 
@@ -105,7 +105,7 @@ app.use(bitnaclExpress.logger()); // use default "simple" format
 
     > **IMPORTANT**: ```errorLogger``` **doesn't handle** the **errors/exceptions**, it **only logs** them, so place it **before** your error handlers.
 
-    I personally recommend to ```try/catch``` your routes and handle errors locally unless you have a general handler for some or all of your routes. You can use [bitnacle logger]() along with ```bitnacle-express``` to log your errors on the ```catch``` block of your routes.
+    I personally recommend to ```try/catch``` your routes and handle errors locally unless you have a general handler for some or all of your routes. You can use [Bitnacle](https://www.npmjs.com/package/bitnacle) logger along with ```bitnacle-express``` to log your errors on the ```catch``` block of your routes.
 
 ## Log levels
 
