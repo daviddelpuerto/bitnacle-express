@@ -19,7 +19,8 @@
     "error",
     "json"
   ],
-  "scripts": {
+  "scripts": {    
+    "lint": "eslint index.js --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
