@@ -69,45 +69,38 @@ function logger(options = {}) {
 
 function errorLogger(options = {}) {
 
-    try {
+    checkLoggerCall(options);
 
-        checkLoggerCall(options);
-    
-        const format = options.format || 'simple';
+    const format = options.format || 'simple';
 
-        return function(err, req, res, next) {
+    return function(err, req, res, next) {
 
-            const time = bitnacleTimer.getRequestTime();
-            const level = 'ERROR';
-            const { method, id } = req;
-            const remoteAddress = req.ip || req.clientIp;
-            const endpoint = req.originalUrl || req.url;
-            const message = err;
+        const time = bitnacleTimer.getRequestTime();
+        const level = 'ERROR';
+        const { method, id } = req;
+        const remoteAddress = req.ip || req.clientIp;
+        const endpoint = req.originalUrl || req.url;
+        const message = err;
 
-            const errorMessageObject = {
-                time, 
-                level,
-                req: {
-                    method, 
-                    endpoint,
-                    remoteAddress,   
-                    id
-                },
-                message
-            };
-
-            const errorMessage = bitnacleFormats[format](errorMessageObject);
-
-            console.log(errorMessage);
-
-            next(err);
-
+        const errorMessageObject = {
+            time, 
+            level,
+            req: {
+                method, 
+                endpoint,
+                remoteAddress,   
+                id
+            },
+            message
         };
 
-    } catch (error) {
-        console.error('An error on bitnacle-express.errorLogger occurred, please report this error');
-        console.error(error);   
-    }   
+        const errorMessage = bitnacleFormats[format](errorMessageObject);
+
+        console.log(errorMessage);
+
+        next(err);
+
+    };
 
 };
 
