@@ -14,7 +14,7 @@ const checkLoggerCall = function(options) {
     if (options.format && bitnacleFormats[options.format] === undefined) {
         throw new Error('Invalid format for bitnacleExpress, use one of the following: simple, json or extended.');
     }
-}
+};
 
 const logger = function(options = {}) {
 
@@ -71,7 +71,7 @@ const logger = function(options = {}) {
             res.on('close', afterResponse);
             
             next();
-        }
+        };
     }
    
     catch (err) {
@@ -79,7 +79,7 @@ const logger = function(options = {}) {
         console.error(err);   
     }
 
-}
+};
 
 const errorLogger = function(options = {}) {
 
@@ -108,7 +108,7 @@ const errorLogger = function(options = {}) {
                     id
                 },
                 message
-            }
+            };
 
             const errorMessage = bitnacleFormats[format](errorMessageObject);
 
@@ -116,16 +116,16 @@ const errorLogger = function(options = {}) {
 
             next(err);
 
-        }
+        };
 
     } catch (error) {
         console.error('An error on bitnacle-express.errorLogger occurred, please report this error');
-        console.error(err);   
+        console.error(error);   
     }   
 
-}
+};
 
 module.exports = {
     logger,
     errorLogger
-}
+};
