@@ -126,6 +126,7 @@ const errorLogger = function(options = {}) {
 };
 
 module.exports = {
+    checkLoggerCall,
     logger,
     errorLogger
 };
