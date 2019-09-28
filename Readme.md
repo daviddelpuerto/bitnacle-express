@@ -1,5 +1,12 @@
 # bitnacle-express
 
+![Travis (.org)](https://img.shields.io/travis/daviddelpuerto/bitnacle-express)
+![Coveralls github](https://img.shields.io/coveralls/github/daviddelpuerto/bitnacle-express)
+![David](https://img.shields.io/david/daviddelpuerto/bitnacle-express)
+![David](https://img.shields.io/david/dev/daviddelpuerto/bitnacle-express)
+![GitHub](https://img.shields.io/github/license/daviddelpuerto/bitnacle-express)
+![npm](https://img.shields.io/npm/v/bitnacle-express)
+
 ```bitnacle-express``` is a dead simple middleware logger to use with [Express](https://www.npmjs.com/package/express) apps.
 
 It is compatible with [request-ip](https://www.npmjs.com/package/request-ip) and [express-request-id](https://www.npmjs.com/package/express-request-id), if you are using them **make sure** to use ```bitnacle-express``` **after** them.
