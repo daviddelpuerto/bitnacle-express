@@ -18,12 +18,10 @@ const checkLoggerCall = function(options) {
 
 const logger = function(options = {}) {
 
-    try {
-
         checkLoggerCall(options);
     
         const format = options.format || 'simple';
-    
+        
         return (req, res, next) => {
             
             const time = bitnacleTimer.getRequestTime();
@@ -72,12 +70,6 @@ const logger = function(options = {}) {
             
             next();
         };
-    }
-   
-    catch (err) {
-        console.error('An error on bitnacle-express.logger occurred, please report this error');
-        console.error(err);   
-    }
 
 };
 
