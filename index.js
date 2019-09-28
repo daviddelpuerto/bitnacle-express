@@ -96,7 +96,7 @@ function errorLogger(options = {}) {
 
         const errorMessage = bitnacleFormats[format](errorMessageObject);
 
-        console.log(errorMessage);
+        console.error(errorMessage);
 
         next(err);
 
