@@ -24,6 +24,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "bitnacle-helpers": "^1.1.0-beta"
+    "bitnacle-helpers": "^1.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^6.4.0"
   }
 }
