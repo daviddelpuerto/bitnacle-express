@@ -10,6 +10,36 @@ function checkLoggerCall(options) {
     if (options.format && bitnacleFormats[options.format] === undefined) throw new Error('Invalid format for bitnacleExpress, use one of the following: simple, json or extended.');
 };
 
+function getRequestProperties(req) {
+    const { hostname, headers, id, method } = req;
+
+    return {
+        hostname, 
+        headers,
+        id, 
+        method,
+        params: req.params && Object.keys(req.params).length,
+        query: req.query && Object.keys(req.query).length,
+        remoteAddress: req.clientIp || req.ip,
+        endpoint: req.originalUrl || req.url
+    };
+};
+
+function getElapsedTime(requestStartTime) {
+    return `${Date.now() - requestStartTime}ms`;
+};
+
+function getLogMessageObject(time, level, statusCode, { hostname, ...req }, elapsedTime) {
+    return {
+        time,
+        level,
+        hostname,
+        req,
+        statusCode,
+        elapsedTime
+    };
+};
+
 function logger(options = {}) {
 
     checkLoggerCall(options);
@@ -18,46 +48,25 @@ function logger(options = {}) {
     
     return (req, res, next) => {
         
-        const time = bitnacleTimer.getRequestTime();
-        const start = Date.now();
+        const formattedRequestTime = bitnacleTimer.getRequestTime();
+        const requestStartTime = Date.now();
         
         function afterResponse() {
             
             res.removeListener('finish', afterResponse);
             res.removeListener('close', afterResponse);
             
-            const level = bitnacleLevels.getLogLevel(res);
-
-            const { hostname, headers, id, method } = req;
-            const params = req.params && Object.keys(req.params).length;
-            const query = req.query && Object.keys(req.query).length;
             const { statusCode } = res;
-            const remoteAddress = req.clientIp || req.ip;
-            const endpoint = req.originalUrl || req.url;
+            const level = bitnacleLevels.getLogLevel(res);
+            const requestProperties = getRequestProperties(req);
+            const elapsedTime = getElapsedTime(requestStartTime);
 
-            const elapsedTime = `${Date.now() - start}ms`;
+            const logMessageObject = getLogMessageObject(formattedRequestTime, level, statusCode, requestProperties, elapsedTime);
 
-            const logMessageObject = {
-                time,
-                level,
-                hostname,
-                req: {
-                    method,
-                    endpoint,
-                    headers,
-                    remoteAddress,
-                    params,
-                    query,
-                    id,
-                },
-                statusCode,
-                elapsedTime
-            };
-            
             const logMessage = bitnacleFormats[format](logMessageObject);
 
             console.log(logMessage);
-        }
+        };
         
         res.on('finish', afterResponse);
         res.on('close', afterResponse);
@@ -75,23 +84,16 @@ function errorLogger(options = {}) {
 
     return function(err, req, res, next) {
 
-        const time = bitnacleTimer.getRequestTime();
-        const level = 'ERROR';
-        const { method, id } = req;
-        const remoteAddress = req.ip || req.clientIp;
-        const endpoint = req.originalUrl || req.url;
-        const message = err;
-
         const errorMessageObject = {
-            time, 
-            level,
+            time: bitnacleTimer.getRequestTime(), 
+            level: 'ERROR',
             req: {
-                method, 
-                endpoint,
-                remoteAddress,   
-                id
+                method: req.method, 
+                endpoint: req.originalUrl || req.url,
+                remoteAddress: req.ip || req.clientIp,   
+                id: req.id
             },
-            message
+            message: err
         };
 
         const errorMessage = bitnacleFormats[format](errorMessageObject);
