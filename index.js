@@ -65,7 +65,7 @@ function logger(options = {}) {
 
             const logMessage = bitnacleFormats[format](logMessageObject);
 
-            console.log(logMessage);
+            process.stdout.write(logMessage);
         };
         
         res.on('finish', afterResponse);
@@ -98,7 +98,7 @@ function errorLogger(options = {}) {
 
         const errorMessage = bitnacleFormats[format](errorMessageObject);
 
-        console.error(errorMessage);
+        process.stderr.write(errorMessage);
 
         next(err);
 
