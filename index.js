@@ -21,7 +21,7 @@ function getRequestProperties(req) {
         params: req.params && Object.keys(req.params).length,
         query: req.query && Object.keys(req.query).length,
         remoteAddress: req.clientIp || req.ip,
-        endpoint: req.originalUrl || req.url
+        endpoint: req.url || req.originalUrl
     };
 };
 
@@ -52,21 +52,26 @@ function logger(options = {}) {
         const requestStartTime = Date.now();
         
         function afterResponse() {
-            
-            res.removeListener('finish', afterResponse);
-            res.removeListener('close', afterResponse);
-            
-            const { statusCode } = res;
-            const level = bitnacleLevels.getLogLevel(res);
-            const requestProperties = getRequestProperties(req);
-            const elapsedTime = getElapsedTime(requestStartTime);
 
-            const logMessageObject = getLogMessageObject(formattedRequestTime, level, statusCode, requestProperties, elapsedTime);
+            return new Promise((resolve, reject) => {
 
-            const logMessage = bitnacleFormats[format](logMessageObject);
-
-            process.stdout.write(logMessage);
-        };
+                
+                res.removeListener('finish', afterResponse);
+                res.removeListener('close', afterResponse);
+                
+                const { statusCode } = res;
+                const level = bitnacleLevels.getLogLevel(res);
+                const requestProperties = getRequestProperties(req);
+                const elapsedTime = getElapsedTime(requestStartTime);
+                
+                const logMessageObject = getLogMessageObject(formattedRequestTime, level, statusCode, requestProperties, elapsedTime);
+                
+                const logMessage = bitnacleFormats[format](logMessageObject);
+                
+                process.stdout.write(logMessage);
+                resolve();
+            });
+        }
         
         res.on('finish', afterResponse);
         res.on('close', afterResponse);
