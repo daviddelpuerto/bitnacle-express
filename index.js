@@ -101,13 +101,13 @@ function errorLogger(options = {}) {
             },
             message: err
         };
-
+        
         const errorMessage = bitnacleFormats[format](errorMessageObject);
-
+        
         process.stderr.write(errorMessage);
-
+        
         next(err);
-
+        
     };
 
 };

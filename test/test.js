@@ -70,6 +70,7 @@ describe('#logger()', async function() {
                     inspect.restore();
                     const logMessage = inspect.output[0];
                     const wellFormattedLog = /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}:\d{3}[+-]\d{4}\]\s\[[\w]*\]\s\[[\w]*\]\s\[[/\w]*\]\s\[[-\w]*\]\s\[[1-5]\d{2}\]\s\[[\d*]ms\]/.test(logMessage);
+                    
                     expect(wellFormattedLog).to.be.true;
 
                     done();
@@ -108,10 +109,10 @@ describe('#logger()', async function() {
                     const logMessage = JSON.parse(inspect.output[0]);
                     
                     expect(logMessage).to.be.an('object').to.have.property('time');
-                    expect(logMessage).to.be.an('object').to.have.property('level');
-                    expect(logMessage).to.be.an('object').to.have.property('method');
-                    expect(logMessage).to.be.an('object').to.have.property('endpoint');
-                    expect(logMessage).to.be.an('object').to.have.property('id');
+                    expect(logMessage).to.be.an('object').to.have.property('level', 'INFO');
+                    expect(logMessage).to.be.an('object').to.have.property('method', req.method);
+                    expect(logMessage).to.be.an('object').to.have.property('endpoint', req.originalUrl);
+                    expect(logMessage).to.be.an('object').to.have.property('id', req.id);
                     expect(logMessage).to.be.an('object').to.have.property('statusCode');
                     expect(logMessage).to.be.an('object').to.have.property('elapsedTime');
                     
@@ -126,6 +127,31 @@ describe('#logger()', async function() {
 
         });
 
+    });
+
+});
+
+describe('#errorLogger()', function() {
+
+    const req = httpMocks.createRequest({
+        method: 'GET',
+        originalUrl: '/api/users',
+        id: '9ff20b68-f46d-4eb5-9ef3-9cb077de1677',
+        hostname: 'localhost',
+        remoteAddress: '::1'
+    });
+
+    it('should log a well formatted error log', async function(done) {
+        const errorCallback = bitnaclExpress.errorLogger();
+        const inspectError = stderr.inspect();
+        errorCallback({}, req, {}, () => {});
+        inspectError.restore();
+        const errorLog = inspectError.output[0];
+        const wellFormattedErrorLog = /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}:\d{3}[+-]\d{4}\]\s\[ERROR\]\s\[[\w]*]\s\[[/\w]*\]\s\[[\w-]*\]/.test(errorLog);
+
+        expect(wellFormattedErrorLog).to.be.true;
+
+        done();
     });
 
 });
