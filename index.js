@@ -54,7 +54,6 @@ function logger(options = {}) {
         function afterResponse() {
 
             return new Promise((resolve, reject) => {
-
                 
                 res.removeListener('finish', afterResponse);
                 res.removeListener('close', afterResponse);
@@ -69,7 +68,9 @@ function logger(options = {}) {
                 const logMessage = bitnacleFormats[format](logMessageObject);
                 
                 process.stdout.write(logMessage);
+                
                 resolve();
+
             });
         }
         

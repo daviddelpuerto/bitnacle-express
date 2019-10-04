@@ -1,7 +1,7 @@
 # bitnacle-express
 
-![Travis (.org)](https://img.shields.io/travis/daviddelpuerto/bitnacle-express)
-![Coveralls github](https://img.shields.io/coveralls/github/daviddelpuerto/bitnacle-express)
+[![Build Status](https://travis-ci.org/daviddelpuerto/bitnacle-express.svg?branch=master)](https://travis-ci.org/daviddelpuerto/bitnacle-express)
+[![Coverage Status](https://coveralls.io/repos/github/daviddelpuerto/bitnacle-express/badge.svg?branch=master)](https://coveralls.io/github/daviddelpuerto/bitnacle-express?branch=master)
 ![David](https://img.shields.io/david/daviddelpuerto/bitnacle-express)
 ![David](https://img.shields.io/david/dev/daviddelpuerto/bitnacle-express)
 ![GitHub](https://img.shields.io/github/license/daviddelpuerto/bitnacle-express)
