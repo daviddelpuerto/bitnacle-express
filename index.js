@@ -95,7 +95,7 @@ function errorLogger(options = {}) {
             level: 'ERROR',
             req: {
                 method: req.method, 
-                endpoint: req.originalUrl || req.url,
+                endpoint: req.url || req.originalUrl,
                 remoteAddress: req.ip || req.clientIp,   
                 id: req.id
             },
