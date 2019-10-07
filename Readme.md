@@ -37,8 +37,6 @@ app.use(bitnaclExpress.logger()); // use default "simple" format
     }));  
     ```
 
-    > **Note**: ```json``` format outputs a _JSON-stringified_ log message and ```extended``` format _outputs a **raw object**_
-
     These are the outputs for the 3 different formats, ```simple```, ```json``` and ```extended``` respectively:
 
     ```
