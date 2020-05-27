@@ -54,6 +54,9 @@ describe('#logger()', async function() {
                 id: '9ff20b68-f46d-4eb5-9ef3-9cb077de1677',
                 hostname: 'localhost',
                 remoteAddress: '::1', 
+                headers: {
+                    'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36',
+                }
             });
             
             const res = httpMocks.createResponse({
@@ -69,7 +72,7 @@ describe('#logger()', async function() {
                     await simpleFormatCallback(req, res, () => {});
                     inspect.restore();
                     const logMessage = inspect.output[0];
-                    const wellFormattedLog = /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}:\d{3}[+-]\d{4}\]\s\[[\w]*\]\s\[[\w]*\]\s\[[/\w]*\]\s\[[-\w]*\]\s\[[1-5]\d{2}\]\s\[[\d*]ms\]/.test(logMessage);
+                    const wellFormattedLog = /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}:\d{3}[+-]\d{4}\]\s\[[\w]*\]\s\[[\w]*\]\s\[[/\w]*\]\s\[(.*?)\]\s\[[-\w]*\]\s\[[1-5]\d{2}\]\s\[[\d*]ms\]/.test(logMessage);
                     
                     expect(wellFormattedLog).to.be.true;
 
