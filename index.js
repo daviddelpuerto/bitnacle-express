@@ -13,8 +13,11 @@ function checkLoggerCall(options) {
 function getRequestProperties(req) {
     const { hostname, headers, id, method } = req;
 
+    const userAgent = headers['user-agent'];
+
     return {
         hostname, 
+        userAgent,
         headers,
         id, 
         method,
@@ -29,11 +32,12 @@ function getElapsedTime(requestStartTime) {
     return `${Date.now() - requestStartTime}ms`;
 };
 
-function getLogMessageObject(time, level, statusCode, { hostname, ...req }, elapsedTime) {
+function getLogMessageObject(time, level, statusCode, { hostname, userAgent, ...req }, elapsedTime) {
     return {
         time,
         level,
         hostname,
+        userAgent,
         req,
         statusCode,
         elapsedTime
