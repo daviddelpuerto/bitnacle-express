@@ -40,7 +40,7 @@ app.use(bitnaclExpress.logger()); // use default "simple" format
     These are the outputs for the 3 different formats, ```simple```, ```json``` and ```extended``` respectively:
 
     ```
-    [2019-08-25T17:03:24:461+0200] [INFO] [GET] [/] [::1] [adb91efc-f05d-486e-809f-6ced2d3d046c] [304] [10ms]
+    [2020-05-28T00:53:13:658+0200] [INFO] [GET] [/] [::1] [Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36] [cd820302-740b-4f30-8a68-a4348c68bdd9] [304] [9ms]
     ```
 
     ```json
