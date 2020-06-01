@@ -47,14 +47,26 @@ function getLogMessageObject(time, level, statusCode, { hostname, userAgent, ...
 };
 
 function isWritableStream(obj) {
-    return obj instanceof stream.Stream && typeof (obj._write === 'function') && typeof (obj._writableState === 'object');
+    return obj instanceof stream.Stream 
+        && typeof obj._write === 'function' 
+        && typeof obj._writableState === 'object';
 };
 
 function logger(options = {}) {
 
     checkLoggerCall(options);
 
+    let appStreams = [];
+    
     const format = options.format || 'simple';
+    const streams = options.streams;
+
+    if (streams && streams.length) {
+        appStreams = streams.map((appStream, index) => {
+            if (isWritableStream(appStream)) return appStream;
+            throw new Error(`stream[${index}] is not a writable stream\n`);
+        });
+    }
     
     return (req, res, next) => {
         
@@ -74,11 +86,15 @@ function logger(options = {}) {
                 const elapsedTime = getElapsedTime(requestStartTime);
                 
                 const logMessageObject = getLogMessageObject(formattedRequestTime, level, statusCode, requestProperties, elapsedTime);
-                
-                const logMessage = bitnacleFormats[format](logMessageObject);
-                
-                process.stdout.write(`${logMessage}\n`);
-                
+                           
+                const logMessage = `${bitnacleFormats[format](logMessageObject)}\n`;
+            
+                process.stdout.write(logMessage);
+            
+                appStreams.length && appStreams.forEach(stream => {
+                    stream.write(logMessage);
+                });
+
                 resolve();
 
             });
