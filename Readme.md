@@ -119,3 +119,21 @@ app.use(bitnaclExpress.logger()); // use default "simple" format
 - ```statusCode``` >= **500** will use ```[ERROR]``` level
 - ```statusCode``` >= **400** will use ```[WARNING]``` level
 - ```statusCode``` >= **100** will use ```[INFO]``` level
+
+## Log to stream files
+
+In order to log to files, you must create streams and pass them to bitnacle. You can add as many streams as you want:
+
+```javascript
+const router = require('./router');
+
+const writableStream = fs.createWriteStream('./access.log', { flags: 'a' });
+
+app.use(router);
+
+app.use(bitnaclExpress.errorLogger({
+    streams: [
+        writableStream
+    ]
+}));
+```
