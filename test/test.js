@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const httpMocks = require('node-mocks-http');
 const { stdout, stderr } = require('test-console');
 const bitnaclExpress = require('../index');
+const fs = require('fs');
 
 function route(req, res){
     let data = [];
@@ -39,8 +40,49 @@ describe('#logger()', async function() {
         })).to.throw();
     });
 
-    it('should return a function', function() {
-        expect(bitnaclExpress.logger()).to.be.a('function');
+    it('should throw if options.streams includes non writable streams', function() {
+        expect(() => bitnaclExpress.logger({
+            streams: [
+                'Invalid stream'
+            ]
+        })).to.throw();
+
+        const sampleLogFile = './sampleLogFile.txt';
+        const readableStream = fs.createReadStream(sampleLogFile);
+
+        expect(() => bitnaclExpress.logger({
+            streams: [
+                readableStream
+            ]
+        })).to.throw();
+
+        readableStream._write = () => {};
+        readableStream._writableState = 'fake prop'
+
+        expect(() => bitnaclExpress.logger({
+            streams: [
+                readableStream
+            ]
+        })).to.throw();
+    });
+
+    it('should throw if options.streams is not an array', function() {
+        expect(() => bitnaclExpress.logger({
+            streams: 'invalid streams'
+        })).to.throw();
+    });
+
+    it('should write to given stream if there are streams', function() {
+        const writableStream = fs.createWriteStream('./log.txt', { flags: 'a' });
+        expect(() => bitnaclExpress.logger({
+            streams: [
+                writableStream
+            ]
+        }));
+    });
+
+    it('should write to given stream if there are streams', function() {
+        expect(() => bitnaclExpress.logger());
     });
 
     
@@ -105,7 +147,11 @@ describe('#logger()', async function() {
                     
                 res.on('end', async function() {
                     
-                    const jsonFormatCallback = bitnaclExpress.logger({ format: 'json' });
+                    const writableStream = fs.createWriteStream('./log.txt');
+                    const jsonFormatCallback = bitnaclExpress.logger({ 
+                        format: 'json',
+                        streams: [writableStream]
+                    });
                     const inspect = stdout.inspect();
                     await jsonFormatCallback(req, res, () => {});
                     inspect.restore();
