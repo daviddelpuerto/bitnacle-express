@@ -1,5 +1,7 @@
 'use strict';
 
+const stream = require('stream');
+
 const { bitnacleFormats, bitnacleLevels, bitnacleTimer} = require('bitnacle-helpers');
 
 function checkLoggerCall(options) {
@@ -42,6 +44,10 @@ function getLogMessageObject(time, level, statusCode, { hostname, userAgent, ...
         statusCode,
         elapsedTime
     };
+};
+
+function isWritableStream(obj) {
+    return obj instanceof stream.Stream && typeof (obj._write === 'function') && typeof (obj._writableState === 'object');
 };
 
 function logger(options = {}) {
