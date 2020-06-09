@@ -2,4 +2,4 @@
 /.vscode
 /coverage
 /node_modules
-/log.*
+/*/*.log
