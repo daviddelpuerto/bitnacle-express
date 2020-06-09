@@ -20,7 +20,7 @@
     "json"
   ],
   "scripts": {
-    "lint": "eslint index.js --fix",
+    "lint": "eslint ./test index.js --fix",
     "test": "nyc --reporter=html mocha"
   },
   "license": "MIT",
